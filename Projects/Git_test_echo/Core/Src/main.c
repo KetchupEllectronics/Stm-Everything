@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdlib.h>
+#include "HCSR04.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +60,8 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+
 int _write(int file, char *ptr, int len)
 {
   // Ez a sor mondja meg, hogy keressen egy huart2-t a kódban bárhol
@@ -104,10 +107,17 @@ int main(void)
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t pmillis = 0;
-  int measurements[5];
 
   HAL_TIM_Base_Start(&htim1);
+
+  HCSR04_Config sensor;
+  sensor.Timer = &htim1;
+  sensor.TRIG_Port = TRIG_GPIO_Port;
+  sensor.TRIGPin = TRIG_Pin;
+  sensor.ECHO_Port = ECHO_GPIO_Port;
+  sensor.ECHOPin = ECHO_Pin;
+
+  HCSR04_Init(&sensor);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,21 +127,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if(HAL_GetTick() - pmillis > 200)
-	  	{
-	  		for(int i=0; i<4; i++)
-	  		{
-	  			__disable_irq();
-	  			measurements[i] = get_distance();
-	  			__enable_irq();
-	  			HAL_Delay(10);
-	  		}
-	  		qsort(measurements, 5, sizeof(int), compare);
 
-	  		float centimeter = (float)measurements[3] / 10;
-	  		printf("tavolsag %.1f cm\r\n", centimeter);
-	  		pmillis = HAL_GetTick();
-	  	}
+	  uint16_t distance = HCSR04_getDistance(&sensor, 15, 0);
+	  printf("tavolsag %d mm\r\n", distance);
+	  HAL_Delay(250);
   }
   /* USER CODE END 3 */
 }
@@ -290,43 +289,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int compare(const void *a, const void *b)
-{
-	return *(int*)a - *(int*)b;
-}
-
-void delay_us(uint32_t us)
-{
-	__HAL_TIM_SET_COUNTER(&htim1, 0);
-	while( __HAL_TIM_GET_COUNTER(&htim1) < us * 2);
-
-}
-
-int get_distance()
-{
-	int localTime;
-
-
-	HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_SET);
-	delay_us(10);
-	HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_RESET);
-	__HAL_TIM_SET_COUNTER(&htim1, 0);
-	while(HAL_GPIO_ReadPin(ECHO_GPIO_Port, ECHO_Pin) == 0)
-	{
-		if(__HAL_TIM_GET_COUNTER(&htim1) > 30000)
-			return 35505;
-	}
-	__HAL_TIM_SET_COUNTER(&htim1, 0);
-	while(HAL_GPIO_ReadPin(ECHO_GPIO_Port, ECHO_Pin) == 1)
-	{
-		if(__HAL_TIM_GET_COUNTER(&htim1) > 65534)
-			break;
-	}
-	localTime = __HAL_TIM_GET_COUNTER(&htim1);
-	return (localTime * 10 )/ 117;
-
-
-}
 /* USER CODE END 4 */
 
 /**
