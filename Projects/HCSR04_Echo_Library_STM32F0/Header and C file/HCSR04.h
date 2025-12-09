@@ -13,5 +13,5 @@ typedef struct{
 } HCSR04_Config;
 
 void HCSR04_Init(HCSR04_Config *sensor);
-uint32_t HCSR04_getDistance(HCSR04_Config *sensor, int numOfMeasures, int unit);
+uint32_t HCSR04_getDistance(HCSR04_Config *sensor, int numOfMeasures, int unit, int freq);
 #endif

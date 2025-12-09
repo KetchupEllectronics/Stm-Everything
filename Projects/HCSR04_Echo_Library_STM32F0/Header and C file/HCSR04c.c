@@ -28,18 +28,18 @@ static uint32_t compare(const void *a, const void *b)
 	return *(uint32_t*)a - *(uint32_t*)b;
 }
 
-static void delay_us(HCSR04_Config *sensor, uint32_t us)
+static void delay_us(HCSR04_Config *sensor, uint32_t us, int freq)
 {
  	__HAL_TIM_SET_COUNTER(sensor->Timer, 0);
- 	while(__HAL_TIM_GET_COUNTER(sensor->Timer) < us);
+ 	while(__HAL_TIM_GET_COUNTER(sensor->Timer) < us * freq);
 }
 
-static uint32_t readHCSR04(HCSR04_Config *sensor)
+static uint32_t readHCSR04(HCSR04_Config *sensor, int freq)
 {
  uint32_t localTime = 0;
  
  	HAL_GPIO_WritePin(sensor -> TRIG_Port, sensor -> TRIGPin, GPIO_PIN_SET);
-	delay_us(sensor, 10);
+	delay_us(sensor, 10, freq);
 	HAL_GPIO_WritePin(sensor -> TRIG_Port, sensor -> TRIGPin, GPIO_PIN_RESET);
 	__HAL_TIM_SET_COUNTER(sensor -> Timer, 0);
 	while(HAL_GPIO_ReadPin(sensor -> ECHO_Port, sensor ->  ECHOPin) == 0)
@@ -54,16 +54,16 @@ static uint32_t readHCSR04(HCSR04_Config *sensor)
 			break;
 	}
 	localTime = __HAL_TIM_GET_COUNTER(sensor -> Timer);
-	return (localTime * 10 )/ 117;
+	return (localTime * 10 )/ 58 * freq;
 }
 
-uint32_t HCSR04_getDistance(HCSR04_Config *sensor, int numOfMeasures, int unit)
+uint32_t HCSR04_getDistance(HCSR04_Config *sensor, int numOfMeasures, int unit, int freq)
 {
 			uint32_t measurements[numOfMeasures];
 			for(int i=0; i<numOfMeasures -1 ; i++)
 	  		{
 	  			__disable_irq();
-	  			measurements[i] = readHCSR04(sensor);
+	  			measurements[i] = readHCSR04(sensor, freq);
 	  			__enable_irq();
 	  			HAL_Delay(5);
 	  		}

@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Git_test_Echo
+BUILD_ARTIFACT_NAME := HCSR04_ECHO_PollingLib_Exemple
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Git_test_Echo.elf \
+HCSR04_ECHO_PollingLib_Exemple.elf \
 
 MAP_FILES += \
-Git_test_Echo.map \
+HCSR04_ECHO_PollingLib_Exemple.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Git_test_Echo.list \
+HCSR04_ECHO_PollingLib_Exemple.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Git_test_Echo.elf secondary-outputs
+main-build: HCSR04_ECHO_PollingLib_Exemple.elf secondary-outputs
 
 # Tool invocations
-Git_test_Echo.elf Git_test_Echo.map: $(OBJS) $(USER_OBJS) C:\STM_Everything\Stm-Everything\Projects\Git_test_echo\STM32F030R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Git_test_Echo.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\STM_Everything\Stm-Everything\Projects\Git_test_echo\STM32F030R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Git_test_Echo.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+HCSR04_ECHO_PollingLib_Exemple.elf HCSR04_ECHO_PollingLib_Exemple.map: $(OBJS) $(USER_OBJS) C:\STM_Everything\Stm-Everything\Projects\HCSR04_Echo_Library_STM32F0\STM32F030R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "HCSR04_ECHO_PollingLib_Exemple.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\STM_Everything\Stm-Everything\Projects\HCSR04_Echo_Library_STM32F0\STM32F030R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="HCSR04_ECHO_PollingLib_Exemple.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Git_test_Echo.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Git_test_Echo.list"
+HCSR04_ECHO_PollingLib_Exemple.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "HCSR04_ECHO_PollingLib_Exemple.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Git_test_Echo.elf Git_test_Echo.list Git_test_Echo.map default.size.stdout
+	-$(RM) HCSR04_ECHO_PollingLib_Exemple.elf HCSR04_ECHO_PollingLib_Exemple.list HCSR04_ECHO_PollingLib_Exemple.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

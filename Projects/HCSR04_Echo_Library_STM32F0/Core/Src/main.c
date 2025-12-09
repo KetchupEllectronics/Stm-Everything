@@ -128,7 +128,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  uint16_t distance = HCSR04_getDistance(&sensor, 15, 0);
+	  uint16_t distance = HCSR04_getDistance(&sensor, 15, 0, 1);
 	  printf("tavolsag %d mm\r\n", distance);
 	  HAL_Delay(250);
   }
@@ -189,7 +189,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 3;
+  htim1.Init.Prescaler = 7;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 65535;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
