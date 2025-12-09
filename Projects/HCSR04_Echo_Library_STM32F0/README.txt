@@ -24,3 +24,4 @@ uint16_t distance = HCSR04_getDistance(&sensor, 15, 0, 1);
 parameters: ( your sensor, samples, unit, freqency in Mhz)
 samples: the program makes some measures ( number of samples ) and calculates median
 ( more you sample, more precisious but more longer); Recommend 5-10; 5-> 50ms+ sound echos; 10 -> 100ms+sound echos
+
