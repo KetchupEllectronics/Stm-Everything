@@ -1,7 +1,7 @@
 #ifndef HCSR04_H
 #define HCSR04_H
 
-#include "stm32f0xx_hal.h"  // FONTOS: Ez kell a GPIO és Timer típusokhoz!
+#include "main.h"  // FONTOS: Ez kell a GPIO és Timer típusokhoz!
 #include <stdint.h>
 
 typedef struct{

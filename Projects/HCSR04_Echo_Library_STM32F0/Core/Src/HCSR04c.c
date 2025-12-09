@@ -1,5 +1,5 @@
 #include <HCSR04.h>
-#include "stm32f0xx_hal.h"
+#include "main.h"
 #include <stdint.h>
 
 void HCSR04_Init(HCSR04_Config *sensor) {
